@@ -13,8 +13,11 @@ import matplotlib.dates as mdates
 
 import csv,codecs
 
-#cid =[29662087,30111683,30655086,30936929,31420238,31933194,32377215,32954880,33480964,34011933,34529031,35104565]
-cid = [31017067]
+import collections
+import operator
+
+cid =[29662087,30111683,30655086,30936929,31420238,31933194,32377215,32954880,33480964,34011933,34529031,35104565]
+
 
 def get_dm(cid):
 
@@ -44,6 +47,7 @@ def get_dm(cid):
 
 
 data = get_dm(cid)
+print (len(data))
 
 def draw(data):
 
@@ -51,9 +55,9 @@ def draw(data):
     r_time = []
     a_time = []
     for entry in data:
-        r_time.append(float(entry[1][0]))
+        r_time.append(float(entry[1]))
 
-        a_time.append(float(entry[1][4]))
+        a_time.append(float(entry[5]))
     #print (r_time)
 
     
@@ -83,10 +87,33 @@ def writecsv(data):
 
     csvfile.close()
     print ("done!")
+#writecsv(data)
 
+def freq(data):
+    id=[]
+    for entry in data:
+        id.append(entry[7])
 
+    idcounter = collections.Counter(id)
+    #print(idcounter)
+    
 
-writecsv(data)
+    freqlist = sorted(idcounter.values())
+    freqlist.reverse()
+    #print(freqlist)
+    
+    '''
+    width=2
+    sorted_id = sorted(idcounter.items(), key=operator.itemgetter(1))
+    print (sorted_id)
+    '''
+    width=2
+    plt.bar(range(len(freqlist)),freqlist, width, color='g')
+    plt.show()
+    print("finished")
+
+#freq(data)
+
 
 
 '''
