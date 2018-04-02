@@ -11,7 +11,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
-cid =[29662087,30111683,30655086,30936929,31420238,31933194,32377215,32954880,33480964,34011933,34529031,35104565]
+import csv,codecs
+
+#cid =[29662087,30111683,30655086,30936929,31420238,31933194,32377215,32954880,33480964,34011933,34529031,35104565]
+cid = [31017067]
 
 def get_dm(cid):
 
@@ -31,10 +34,14 @@ def get_dm(cid):
         #print(entry.text)
         dmlist.append([entry.text])
         attr = entry.get("p").split(',')
-        dmlist[i].append(attr)
+        for feature in attr:
+            dmlist[i].append(feature)
+        #dmlist[i].append(attr)
         i=i+1
-    return dmlist
+    
     #print (dmlist)
+    return dmlist
+
 
 data = get_dm(cid)
 
@@ -66,7 +73,21 @@ def draw(data):
     fig.tight_layout()
     plt.show()
 
-draw(data)
+#draw(data)
+
+def writecsv(data):
+    csvfile = codecs.open('5.csv',"w+", 'utf_8_sig')
+    writer = csv.writer(csvfile, dialect='excel')
+    writer.writerow(['content', 'time','mode','fontsize','color','realtime','pool','ID','rowID'])
+    writer.writerows(data)
+
+    csvfile.close()
+    print ("done!")
+
+
+
+writecsv(data)
+
 
 '''
 第一个参数是弹幕出现的时间以秒数为单位。 
